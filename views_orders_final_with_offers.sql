@@ -64,12 +64,14 @@ CREATE VIEW ziffapp.views_orders_final_with_offers
     `is_deleted` Int8,
     `is_unsubscribed` Int8,
     `customer_hash_int` UInt64,
+    `profit` Decimal(18, 7),
     `statusText` String,
     `guarantee_sub` Nullable(String),
     `sub_value` Nullable(String)
 )
 AS SELECT
     o.*,
+    o.profit,
     multiIf(o.status = 1, 'Pending', o.status = 2, 'Take', o.status = 3, 'Call again', o.status = 4, 'Confirmed', o.status = 5, 'Shipped', o.status = 6, 'Returned', o.status = 7, 'Paid', o.status = 8, 'Trash', o.status = 9, 'Canceled', o.status = 10, 'Refunded', 'Unknown') AS statusText,
     om.guarantee_sub,
     multiIf(om.guarantee_sub = 'sub_1', o.sub_1, om.guarantee_sub = 'sub_2', o.sub_2, om.guarantee_sub = 'sub_3', o.sub_3, om.guarantee_sub = 'sub_4', o.sub_4, om.guarantee_sub = 'sub_5', o.sub_5, NULL) AS sub_value

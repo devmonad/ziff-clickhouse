@@ -67,10 +67,12 @@ CREATE VIEW ziffapp.views_orders
     `updated_at` DateTime,
     `is_mobile_phone` Int8,
     `customer_hash_int` UInt64,
+    `profit` Decimal(18, 7),
     `statusText` String
 )
 AS SELECT
     o.*,
+    o.profit,
     multiIf(o.status = 1, 'Pending', o.status = 2, 'Take', o.status = 3, 'Call again', o.status = 4, 'Confirmed', o.status = 5, 'Shipped', o.status = 6, 'Returned', o.status = 7, 'Paid', o.status = 8, 'Trash', o.status = 9, 'Canceled', o.status = 10, 'Refunded', 'Unknown') AS statusText
 FROM ziffapp.orders AS o
 FINAL
