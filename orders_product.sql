@@ -1,6 +1,6 @@
 CREATE TABLE ziffapp.orders_product
 (
-    `order_id` Int64,
+    `order_id` UInt64,
     `quantity` UInt64,
     `product_id` Int64,
     `single_price` Decimal(12, 7),

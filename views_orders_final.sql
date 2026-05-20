@@ -45,13 +45,17 @@ CREATE VIEW ziffapp.views_orders_final
     `date_of_return` Nullable(DateTime),
     `date_of_confirmed` Nullable(DateTime),
     `date_of_paid` Nullable(DateTime),
+    `date_of_trash` Nullable(DateTime),
+    `date_of_canceled` Nullable(DateTime),
+    `date_of_call_again` Nullable(DateTime),
+    `date_of_personal_call_again` Nullable(DateTime),
+    `personal_call_again_note` Nullable(String),
     `revenue` Nullable(Decimal(12, 7)),
-    `cost_per_item_euro` Nullable(Decimal(12, 7)),
-    `cost_per_item_additional_euro` Nullable(Decimal(12, 7)),
-    `quantity` Nullable(Decimal(12, 7)),
     `vat_rate` Nullable(Int8),
-    `payout_in_eur` Nullable(Decimal(12, 7)),
-    `shipping_price_in_eur` Nullable(Decimal(12, 7)),
+    `items_cost_in_eur` Nullable(Decimal(12, 7)),
+    `items_cost_additional_in_eur` Nullable(Decimal(12, 7)),
+    `shipping_cost_in_eur` Nullable(Decimal(12, 7)),
+    `payout_cost_in_eur` Nullable(Decimal(12, 7)),
     `coupon_amount` Nullable(Decimal(12, 7)),
     `coupon_expire_days` Nullable(Int64),
     `coupon_expire_at_date` Nullable(DateTime),
@@ -61,13 +65,14 @@ CREATE VIEW ziffapp.views_orders_final
     `list_name` Nullable(String),
     `confirm_to_cancel` Int8,
     `updated_at` DateTime,
-    `is_deleted` Int8,
-    `is_unsubscribed` Int8,
+    `is_mobile_phone` Int8,
     `customer_hash_int` UInt64,
+    `profit` Decimal(18, 7),
     `statusText` String
 )
 AS SELECT
     o.*,
+    o.profit,
     multiIf(o.status = 1, 'Pending', o.status = 2, 'Take', o.status = 3, 'Call again', o.status = 4, 'Confirmed', o.status = 5, 'Shipped', o.status = 6, 'Returned', o.status = 7, 'Paid', o.status = 8, 'Trash', o.status = 9, 'Canceled', o.status = 10, 'Refunded', 'Unknown') AS statusText
 FROM ziffapp.orders AS o
 FINAL
