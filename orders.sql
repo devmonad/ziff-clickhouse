@@ -67,7 +67,7 @@ CREATE TABLE ziffapp.orders
     `updated_at` DateTime DEFAULT now(),
     `is_mobile_phone` Int8,
     `customer_hash_int` UInt64 DEFAULT cityHash64(customer_hash),
-    `profit` Decimal(18, 7) ALIAS round(if((status IN (4, 5, 7)), coalesce(revenue, 0), 0) - ((coalesce(shipping_cost_in_eur, 0) + coalesce(payout_cost_in_eur, 0)) + if((status IN (5, 7)), (coalesce(items_cost_in_eur, 0) + coalesce(items_cost_additional_in_eur, 0)) + ((coalesce(revenue, 0) / (1 + (coalesce(vat_rate, 0) / 100.))) * (coalesce(vat_rate, 0) / 100.)), 0)), 2),
+    `profit` Decimal(18, 7) ALIAS round(if((status IN (4, 5, 7)), coalesce(revenue, 0), 0) - ((coalesce(shipping_cost_in_eur, 0) + coalesce(payout_cost_in_eur, 0)) + if((status IN (4,5, 7)), (coalesce(items_cost_in_eur, 0) + coalesce(items_cost_additional_in_eur, 0)) + ((coalesce(revenue, 0) / (1 + (coalesce(vat_rate, 0) / 100.))) * (coalesce(vat_rate, 0) / 100.)), 0)), 2),
     INDEX fullname_bf fullname TYPE tokenbf_v1(1024, 3, 0) GRANULARITY 1
 )
 ENGINE = ReplacingMergeTree(updated_at)
